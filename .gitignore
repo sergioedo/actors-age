@@ -102,3 +102,14 @@ dist
 
 # TernJS port file
 .tern-port
+
+# remix gitignore
+/build
+/public/build
+
+/cypress/screenshots
+/cypress/videos
+/prisma/data.db
+/prisma/data.db-journal
+
+/app/styles/tailwind.css
