@@ -1,0 +1,8 @@
+### Search for movies
+GET https://api.themoviedb.org/3/search/movie?api_key={{$dotenv TMDB_API_KEY}}&query=Jack+Reacher
+
+### Search for actors, movies, series...
+GET https://api.themoviedb.org/3/search/multi?api_key={{$dotenv TMDB_API_KEY}}&query=Jack+Reacher
+
+### Movie detail data
+https://api.themoviedb.org/3/movie/343611?api_key={{$dotenv TMDB_API_KEY}}
