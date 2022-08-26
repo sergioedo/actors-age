@@ -3,6 +3,20 @@ Find actors age from movies/series/tv
 
 Made with [The Movie Database API](https://developers.themoviedb.org/3/getting-started/introduction) & [Remix](https://remix.run/).
 
+
+# Known issues:
+
+Console Error: Hydration failed because the initial UI does not match what was rendered on the server --> seems a problem with React 18 affecting to Remix, NextJS...
+
+- https://github.com/facebook/react/issues/24430
+- https://github.com/remix-run/remix/issues/2570
+- https://github.com/remix-run/remix/issues/2947
+- https://github.com/remix-run/remix/issues/1077
+- https://github.com/vercel/next.js/discussions/35773
+- Revert to React 17: https://github.com/DAlperin/dov.dev-remix/commit/89fa4fe1fca31a53fa83387e066dd7672397a125
+
+
+
 # Remix Indie Stack
 
 ![The Remix Indie Stack](https://repository-images.githubusercontent.com/465928257/a241fa49-bd4d-485a-a2a5-5cb8e4ee0abf)
