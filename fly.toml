@@ -9,9 +9,10 @@ auto_rollback = true
 cmd = "start.sh"
 entrypoint = "sh"
 
-[mounts]
-source = "data"
-destination = "/data"
+## disable persistence, no storage volume
+# [mounts]
+# source = "data"
+# destination = "/data"
 
 [[services]]
 internal_port = 8_080
