@@ -3,6 +3,9 @@ Find actors age from movies/series/tv
 
 Made with [The Movie Database API](https://developers.themoviedb.org/3/getting-started/introduction) & [Remix](https://remix.run/).
 
+# Resources
+
+https://dev.to/zachtylr21/building-a-simple-search-ui-with-remix-57da
 
 # Known issues:
 

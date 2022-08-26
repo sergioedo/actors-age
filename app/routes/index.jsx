@@ -1,4 +1,6 @@
-// import { Link } from "@remix-run/react";
+import React from "react";
+import { json } from "@remix-run/node";
+import { useLoaderData, Form, useSearchParams } from "@remix-run/react";
 
 const madeWith = [
   // {
@@ -68,7 +70,48 @@ const madeWith = [
   // },
 ];
 
+const MadeWith = React.memo(() => {
+  return (
+    <div className="mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-wrap justify-center gap-8">
+        <div className="flex items-center justify-center">
+          <h3>Made with:</h3>
+        </div>
+        {madeWith.map((img) => (
+          <a
+            key={img.href}
+            href={img.href}
+            className="flex h-16 w-32 justify-center p-1 grayscale transition hover:grayscale-0 focus:grayscale-0"
+          >
+            <img alt={img.alt} src={img.src} />
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+});
+
+const mediaName = {
+  person: (media) => media.name,
+  movie: (media) => media.title,
+  serie: (media) => media.title,
+  tv: (media) => media.name,
+};
+
+export const loader = async ({ request }) => {
+  const url = new URL(request.url);
+  const query = url.searchParams.get("query");
+  if (!query) return {};
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/multi?api_key=${process.env.TMDB_API_KEY}&query=${query}`
+  );
+  return json(await res.json());
+};
+
 export default function Index() {
+  const [params] = useSearchParams();
+  const { results = [] } = useLoaderData();
+
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
@@ -94,7 +137,7 @@ export default function Index() {
                 search it.
               </p>
               <div className="mx-auto mt-10 max-w-sm sm:max-w-none sm:justify-center">
-                <form className="flex items-center">
+                <Form className="flex items-center" action=".">
                   <label htmlFor="simple-search" className="sr-only">
                     Search
                   </label>
@@ -117,32 +160,36 @@ export default function Index() {
                     <input
                       type="text"
                       id="simple-search"
+                      name="query"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                       placeholder="Search for an actor, actress, movie, serie..."
+                      defaultValue={params.get("query")}
                       required
                     />
                   </div>
-                </form>
+                </Form>
+              </div>
+
+              <div className="mx-auto mt-10 max-w-sm sm:max-w-none sm:justify-center">
+                <dl className="mt-10 max-w-md divide-y divide-gray-200 bg-white text-gray-900 dark:divide-gray-700 dark:text-white">
+                  {results.map((result) => {
+                    const { media_type, id } = result;
+                    const name = mediaName[media_type](result);
+                    return (
+                      <div key={id} className="flex flex-col pb-3">
+                        <dt className="dark mb-1 text-gray-500 dark:text-gray-400 md:text-lg">
+                          {media_type}
+                        </dt>
+                        <dd className="text-lg font-semibold">{name}</dd>
+                      </div>
+                    );
+                  })}
+                </dl>
               </div>
             </div>
           </div>
         </div>
-        <div className="mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8">
-          <div className="mt-6 flex flex-wrap justify-center gap-8">
-            <div className="flex items-center justify-center">
-              <h3>Made with:</h3>
-            </div>
-            {madeWith.map((img) => (
-              <a
-                key={img.href}
-                href={img.href}
-                className="flex h-16 w-32 justify-center p-1 grayscale transition hover:grayscale-0 focus:grayscale-0"
-              >
-                <img alt={img.alt} src={img.src} />
-              </a>
-            ))}
-          </div>
-        </div>
+        <MadeWith />
       </div>
     </main>
   );
