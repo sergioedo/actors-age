@@ -5,7 +5,7 @@ const react = require("@vitejs/plugin-react");
 
 const { defineConfig } = require("vite");
 
-const tsconfigPaths = require("vite-tsconfig-paths");
+const tsconfigPaths = require("vite-tsconfig-paths").default;
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
