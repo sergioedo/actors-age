@@ -12,7 +12,27 @@ export const loader = async ({ request }) => {
   const res = await fetch(
     `https://api.themoviedb.org/3/search/multi?api_key=${process.env.TMDB_API_KEY}&query=${query}`
   );
-  return json(await res.json());
+  const data = await res.json();
+
+  const completedResults = await Promise.all(
+    data.results.map(async (media) => {
+      const { id, media_type } = media;
+      if (media_type === "person") {
+        // add detailed data from person (birthday, deathday)
+        const detail = await fetch(
+          `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.TMDB_API_KEY}`
+        );
+        const person = await detail.json();
+        return Promise.resolve({
+          ...media,
+          birthday: person.birthday,
+          deathday: person.deathday,
+        });
+      }
+      return Promise.resolve(media);
+    })
+  );
+  return json({ ...data, results: completedResults });
 };
 
 export default function Index() {

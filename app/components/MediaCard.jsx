@@ -5,6 +5,20 @@ const mediaName = {
   tv: (media) => media.name,
 };
 
+const mediaTypeDesc = {
+  person: (media) => {
+    const { gender, known_for_department } = media;
+    if (known_for_department === "Acting") {
+      return gender === 1 ? "Actress" : "Actor";
+    }
+    if (known_for_department === "Directing") return "Director";
+    return known_for_department;
+  },
+  movie: (media) => "Movie",
+  serie: (media) => "Serie",
+  tv: (media) => "TV Show",
+};
+
 const NoAvatar = () => {
   return (
     <div className="relative h-24 w-24 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600">
@@ -72,6 +86,7 @@ const MediaImage = ({ media }) => {
 const MediaCard = ({ media }) => {
   const { media_type } = media;
   const name = mediaName[media_type](media);
+  const age = media_type === "person" ? media.birthday : media.release_date;
   return (
     <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-md  dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-col items-center pb-10 pt-10">
@@ -79,8 +94,9 @@ const MediaCard = ({ media }) => {
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
           {name}
         </h5>
+        <span className="text-lg text-gray-700 dark:text-gray-300">{age}</span>
         <span className="text-sm text-gray-500 dark:text-gray-400">
-          {media_type}
+          {mediaTypeDesc[media_type](media)}
         </span>
         {/* <div className="mt-4 flex space-x-3 md:mt-6">
                           <a
