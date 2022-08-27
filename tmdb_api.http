@@ -5,4 +5,7 @@ GET https://api.themoviedb.org/3/search/movie?api_key={{$dotenv TMDB_API_KEY}}&q
 GET https://api.themoviedb.org/3/search/multi?api_key={{$dotenv TMDB_API_KEY}}&query=Jack+Reacher
 
 ### Movie detail data
-https://api.themoviedb.org/3/movie/343611?api_key={{$dotenv TMDB_API_KEY}}
+GET https://api.themoviedb.org/3/movie/343611?api_key={{$dotenv TMDB_API_KEY}}
+
+### Get configuration (image base_url and sizes)
+GET https://api.themoviedb.org/3/configuration?api_key={{$dotenv TMDB_API_KEY}}

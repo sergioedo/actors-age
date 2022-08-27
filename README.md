@@ -5,7 +5,9 @@ Made with [The Movie Database API](https://developers.themoviedb.org/3/getting-s
 
 # Resources
 
-https://dev.to/zachtylr21/building-a-simple-search-ui-with-remix-57da
+Search bar: https://dev.to/zachtylr21/building-a-simple-search-ui-with-remix-57da
+
+Results grid: https://larainfo.com/blogs/tailwind-css-simple-responsive-image-gallery-with-grid
 
 # Known issues:
 
@@ -18,7 +20,8 @@ Console Error: Hydration failed because the initial UI does not match what was r
 - https://github.com/vercel/next.js/discussions/35773
 - Revert to React 17: https://github.com/DAlperin/dov.dev-remix/commit/89fa4fe1fca31a53fa83387e066dd7672397a125
 
-
+Cypress tests: "cy.type() failed because it targeted a disabled element"
+- Workround: https://github.com/cypress-io/cypress/issues/21433
 
 # Remix Indie Stack
 
