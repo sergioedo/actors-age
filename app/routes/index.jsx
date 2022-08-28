@@ -35,6 +35,14 @@ export const loader = async ({ request }) => {
   return json({ ...data, results: completedResults });
 };
 
+const handleKeyUp = (event) => {
+  //key code for enter
+  if (event.keyCode === 13) {
+    // event.preventDefault();
+    event.target.blur();
+  }
+};
+
 export default function Index() {
   const [params] = useSearchParams();
   const { results = [] } = useLoaderData();
@@ -56,7 +64,7 @@ export default function Index() {
             <div className="relative px-4 pt-16 pb-8 sm:px-6 sm:pt-24 sm:pb-14 lg:px-8 lg:pb-20 lg:pt-32">
               <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                 <span className="block uppercase text-yellow-500 drop-shadow-md">
-                  Actors Age
+                  <a href="/">Actors Age</a>
                 </span>
               </h1>
               <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
@@ -89,8 +97,9 @@ export default function Index() {
                       id="simple-search"
                       name="query"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder="Search for actors, movies, series, tv shows..."
+                      placeholder="Search for actors, movies, tv shows..."
                       defaultValue={params.get("query")}
+                      onKeyUp={handleKeyUp}
                       required
                     />
                   </div>
