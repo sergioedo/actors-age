@@ -1,7 +1,6 @@
 const mediaName = {
   person: (media) => media.name,
   movie: (media) => media.title,
-  serie: (media) => media.title,
   tv: (media) => media.name,
 };
 
@@ -15,7 +14,6 @@ const mediaTypeDesc = {
     return known_for_department;
   },
   movie: (media) => "Movie",
-  serie: (media) => "Serie",
   tv: (media) => "TV Show",
 };
 
@@ -62,8 +60,6 @@ const mediaImageURL = {
     media.profile_path ? `${imageBaseURL}w185${media.profile_path}` : null,
   movie: (media) =>
     media.poster_path ? `${imageBaseURL}w185${media.poster_path}` : null,
-  serie: (media) =>
-    media.poster_path ? `${imageBaseURL}w185${media.poster_path}` : null,
   tv: (media) =>
     media.poster_path ? `${imageBaseURL}w185${media.poster_path}` : null,
 };
@@ -83,10 +79,25 @@ const MediaImage = ({ media }) => {
   return <NoMovie />;
 };
 
+function calculateAgeFromDate(fromDate) {
+  var diff_ms = Date.now() - fromDate.getTime();
+  var age_dt = new Date(diff_ms);
+
+  return Math.abs(age_dt.getUTCFullYear() - 1970);
+}
+
+const mediaStartDate = {
+  person: (media) => (media.birthday ? media.birthday : null),
+  movie: (media) => (media.release_date ? media.release_date : null),
+  tv: (media) => (media.first_air_date ? media.first_air_date : null),
+};
+
 const MediaCard = ({ media }) => {
   const { media_type } = media;
   const name = mediaName[media_type](media);
-  const age = media_type === "person" ? media.birthday : media.release_date;
+  const startDate = mediaStartDate[media.media_type](media);
+  const age = startDate ? calculateAgeFromDate(new Date(startDate)) : null;
+  const ageLabel = age ? `${age} years old` : "unknown age";
   return (
     <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-md  dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-col items-center pb-10 pt-10">
@@ -94,7 +105,9 @@ const MediaCard = ({ media }) => {
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
           {name}
         </h5>
-        <span className="text-lg text-gray-700 dark:text-gray-300">{age}</span>
+        <span className="text-lg text-gray-700 dark:text-gray-300">
+          {ageLabel}
+        </span>
         <span className="text-sm text-gray-500 dark:text-gray-400">
           {mediaTypeDesc[media_type](media)}
         </span>
