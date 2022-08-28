@@ -83,7 +83,7 @@ function calculateAgeFromDate(fromDate) {
   var diff_ms = Date.now() - fromDate.getTime();
   var age_dt = new Date(diff_ms);
 
-  return Math.abs(age_dt.getUTCFullYear() - 1970);
+  return age_dt.getUTCFullYear() - 1970;
 }
 
 const mediaStartDate = {
@@ -97,7 +97,16 @@ const MediaCard = ({ media }) => {
   const name = mediaName[media_type](media);
   const startDate = mediaStartDate[media.media_type](media);
   const age = startDate ? calculateAgeFromDate(new Date(startDate)) : null;
-  const ageLabel = age !== null ? `${age} years old` : "unknown age";
+  const ageLabel =
+    age === null
+      ? "unknown age"
+      : age > 0
+      ? media_type === "person"
+        ? `${age} years old`
+        : `${age} years ago`
+      : age < 0
+      ? `scheduled for ${new Date(startDate).getUTCFullYear()}`
+      : "This year";
   return (
     <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-md  dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-col items-center pb-10 pt-10">
@@ -109,7 +118,7 @@ const MediaCard = ({ media }) => {
           {ageLabel}
         </span>
         <span className="text-sm text-gray-500 dark:text-gray-400">
-          {mediaTypeDesc[media_type](media)}
+          <i>{mediaTypeDesc[media_type](media)}</i>
         </span>
         {/* <div className="mt-4 flex space-x-3 md:mt-6">
                           <a
