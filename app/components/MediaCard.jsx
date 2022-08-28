@@ -97,7 +97,7 @@ const MediaCard = ({ media }) => {
   const name = mediaName[media_type](media);
   const startDate = mediaStartDate[media.media_type](media);
   const age = startDate ? calculateAgeFromDate(new Date(startDate)) : null;
-  const ageLabel = age ? `${age} years old` : "unknown age";
+  const ageLabel = age !== null ? `${age} years old` : "unknown age";
   return (
     <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-md  dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-col items-center pb-10 pt-10">
