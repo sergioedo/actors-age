@@ -99,9 +99,9 @@ const PersonMediaCard = ({
   return (
     <a
       href="/"
-      className="w-full max-w-xl rounded-lg border border-gray-200 bg-white shadow-md hover:bg-gray-100 dark:border-gray-700  dark:bg-gray-800 dark:hover:bg-gray-700"
+      className="flex max-w-xl flex-col items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
-      <div className="flex flex-col items-center pb-10 pt-10">
+      <div className="flex flex-col items-center bg-transparent pb-10 pt-10">
         {imageURL ? (
           <img
             className="mb-3 h-24 w-24 rounded-full object-cover shadow-lg"
