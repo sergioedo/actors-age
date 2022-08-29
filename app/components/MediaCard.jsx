@@ -1,10 +1,10 @@
-const mediaName = {
+const getMediaName = {
   person: (media) => media.name,
   movie: (media) => media.title,
   tv: (media) => media.name,
 };
 
-const mediaTypeDesc = {
+const getMediaTypeDesc = {
   person: (media) => {
     const { gender, known_for_department } = media;
     if (known_for_department === "Acting") {
@@ -86,56 +86,101 @@ function calculateAgeFromDate(fromDate) {
   return age_dt.getUTCFullYear() - 1970;
 }
 
-const mediaStartDate = {
+const getMediaStartDate = {
   person: (media) => (media.birthday ? media.birthday : null),
   movie: (media) => (media.release_date ? media.release_date : null),
   tv: (media) => (media.first_air_date ? media.first_air_date : null),
 };
 
-const MediaCard = ({ media }) => {
-  const { media_type } = media;
-  const name = mediaName[media_type](media);
-  const startDate = mediaStartDate[media.media_type](media);
-  const age = startDate ? calculateAgeFromDate(new Date(startDate)) : null;
+const PersonMediaCard = ({
+  mediaName,
+  mediaTypeDesc,
+  startDate,
+  age,
+  media,
+}) => {
   const ageLabel =
     age === null
       ? "unknown age"
       : age > 0
-      ? media_type === "person"
-        ? `${age} years old`
-        : `${age} years ago`
+      ? `${age} years old`
       : age < 0
-      ? `scheduled for ${new Date(startDate).getUTCFullYear()}`
-      : "This year";
+      ? `scheduled born for ${new Date(startDate).getUTCFullYear()}`
+      : "Just born this Year!";
   return (
     <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-md  dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-col items-center pb-10 pt-10">
         <MediaImage media={media} />
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-          {name}
+          {mediaName}
         </h5>
         <span className="text-lg text-gray-700 dark:text-gray-300">
           {ageLabel}
         </span>
         <span className="text-sm text-gray-500 dark:text-gray-400">
-          <i>{mediaTypeDesc[media_type](media)}</i>
+          <i>{mediaTypeDesc}</i>
         </span>
-        {/* <div className="mt-4 flex space-x-3 md:mt-6">
-                          <a
-                            href="#"
-                            className="inline-flex items-center rounded-lg bg-blue-700 py-2 px-4 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                          >
-                            Add friend
-                          </a>
-                          <a
-                            href="#"
-                            className="inline-flex items-center rounded-lg border border-gray-300 bg-white py-2 px-4 text-center text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-                          >
-                            Message
-                          </a>
-                        </div> */}
       </div>
     </div>
+  );
+};
+
+const MovieMediaCard = ({
+  mediaName,
+  mediaTypeDesc,
+  startDate,
+  age,
+  media,
+}) => {
+  const ageLabel =
+    age === null
+      ? "unknown age"
+      : age > 0
+      ? `${age} years ago`
+      : age < 0
+      ? `scheduled for ${new Date(startDate).getUTCFullYear()}`
+      : "This year";
+
+  return (
+    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-md  dark:border-gray-700 dark:bg-gray-800">
+      <div className="flex flex-col items-center pb-10 pt-10">
+        <MediaImage media={media} />
+        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+          {mediaName}
+        </h5>
+        <span className="text-lg text-gray-700 dark:text-gray-300">
+          {ageLabel}
+        </span>
+        <span className="text-sm text-gray-500 dark:text-gray-400">
+          <i>{mediaTypeDesc}</i>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const getMediaCardByType = {
+  person: PersonMediaCard,
+  movie: MovieMediaCard,
+  tv: MovieMediaCard,
+};
+
+const MediaCard = ({ media }) => {
+  const { media_type } = media;
+  const mediaName = getMediaName[media_type](media);
+  const mediaTypeDesc = getMediaTypeDesc[media_type](media);
+  const startDate = getMediaStartDate[media.media_type](media);
+  const age = startDate ? calculateAgeFromDate(new Date(startDate)) : null;
+
+  const MediaCardInstance = getMediaCardByType[media_type];
+  return (
+    <MediaCardInstance
+      mediaName={mediaName}
+      mediaTypeDesc={mediaTypeDesc}
+      startDate={startDate}
+      age={age}
+      media={media}
+    />
   );
 };
 
