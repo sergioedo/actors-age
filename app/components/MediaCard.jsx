@@ -36,9 +36,13 @@ const NoAvatar = () => {
   );
 };
 
-const NoMovie = () => {
+const NoMovie = ({ transparent = true }) => {
   return (
-    <div className="relative h-24 w-24 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600">
+    <div
+      className={`relative h-24 w-24 overflow-hidden rounded-full ${
+        transparent ? "bg-transparent" : "bg-gray-100 dark:bg-gray-600"
+      }`}
+    >
       <svg
         className="absolute left-4 top-4 h-16 w-16 text-gray-400"
         xmlns="http://www.w3.org/2000/svg"
