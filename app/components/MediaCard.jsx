@@ -85,11 +85,14 @@ const PersonMediaCard = ({
   media,
   imageURL,
 }) => {
+  const { deathday } = media;
   const ageLabel =
     age === null
       ? "unknown age"
       : age > 0
-      ? `${age} years old`
+      ? deathday
+        ? `Died ${calculateAgeFromDate(new Date(deathday))} years ago`
+        : `${age} years old`
       : age < 0
       ? `scheduled born for ${new Date(startDate).getUTCFullYear()}`
       : "Just born this Year!";
