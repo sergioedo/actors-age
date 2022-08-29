@@ -64,21 +64,6 @@ const mediaImageURL = {
     media.poster_path ? `${imageBaseURL}w185${media.poster_path}` : null,
 };
 
-const MediaImage = ({ media }) => {
-  const { media_type, name } = media;
-  const imageURL = mediaImageURL[media_type](media);
-  if (imageURL)
-    return (
-      <img
-        className="mb-3 h-24 w-24 rounded-full object-cover shadow-lg"
-        src={imageURL}
-        alt={name}
-      />
-    );
-  if (media_type === "person") return <NoAvatar />;
-  return <NoMovie />;
-};
-
 function calculateAgeFromDate(fromDate) {
   var diff_ms = Date.now() - fromDate.getTime();
   var age_dt = new Date(diff_ms);
@@ -98,6 +83,7 @@ const PersonMediaCard = ({
   startDate,
   age,
   media,
+  imageURL,
 }) => {
   const ageLabel =
     age === null
@@ -108,20 +94,31 @@ const PersonMediaCard = ({
       ? `scheduled born for ${new Date(startDate).getUTCFullYear()}`
       : "Just born this Year!";
   return (
-    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-md  dark:border-gray-700 dark:bg-gray-800">
+    <a
+      href="/"
+      className="w-full max-w-xl rounded-lg border border-gray-200 bg-white shadow-md hover:bg-gray-100 dark:border-gray-700  dark:bg-gray-800 dark:hover:bg-gray-700"
+    >
       <div className="flex flex-col items-center pb-10 pt-10">
-        <MediaImage media={media} />
+        {imageURL ? (
+          <img
+            className="mb-3 h-24 w-24 rounded-full object-cover shadow-lg"
+            src={imageURL}
+            alt={mediaName}
+          />
+        ) : (
+          <NoAvatar />
+        )}
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
           {mediaName}
         </h5>
-        <span className="text-lg text-gray-700 dark:text-gray-300">
-          {ageLabel}
-        </span>
         <span className="text-sm text-gray-500 dark:text-gray-400">
           <i>{mediaTypeDesc}</i>
         </span>
+        <span className="pt-5 text-lg text-gray-700 dark:text-gray-300">
+          {ageLabel}
+        </span>
       </div>
-    </div>
+    </a>
   );
 };
 
@@ -131,6 +128,7 @@ const MovieMediaCard = ({
   startDate,
   age,
   media,
+  imageURL,
 }) => {
   const ageLabel =
     age === null
@@ -142,20 +140,37 @@ const MovieMediaCard = ({
       : "This year";
 
   return (
-    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-md  dark:border-gray-700 dark:bg-gray-800">
-      <div className="flex flex-col items-center pb-10 pt-10">
-        <MediaImage media={media} />
+    <a
+      href="/"
+      className="flex max-w-xl flex-col items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:flex-row"
+    >
+      {imageURL ? (
+        <img
+          className="xs:h-54 md:h-84 object-cover md:w-48 md:rounded-none md:rounded-l-lg"
+          src={imageURL}
+          alt={mediaName}
+        />
+      ) : (
+        <NoMovie />
+      )}
+      <div className="flex flex-col justify-between p-4 leading-normal">
+        {/* <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          {mediaName}
+        </h5>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+          {ageLabel}
+        </p> */}
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
           {mediaName}
         </h5>
-        <span className="text-lg text-gray-700 dark:text-gray-300">
-          {ageLabel}
-        </span>
         <span className="text-sm text-gray-500 dark:text-gray-400">
           <i>{mediaTypeDesc}</i>
         </span>
+        <span className="pt-5 text-lg text-gray-700 dark:text-gray-300">
+          {ageLabel}
+        </span>
       </div>
-    </div>
+    </a>
   );
 };
 
@@ -169,6 +184,7 @@ const MediaCard = ({ media }) => {
   const { media_type } = media;
   const mediaName = getMediaName[media_type](media);
   const mediaTypeDesc = getMediaTypeDesc[media_type](media);
+  const imageURL = mediaImageURL[media_type](media);
   const startDate = getMediaStartDate[media.media_type](media);
   const age = startDate ? calculateAgeFromDate(new Date(startDate)) : null;
 
@@ -180,6 +196,7 @@ const MediaCard = ({ media }) => {
       startDate={startDate}
       age={age}
       media={media}
+      imageURL={imageURL}
     />
   );
 };
