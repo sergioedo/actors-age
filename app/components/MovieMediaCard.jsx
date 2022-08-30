@@ -57,7 +57,9 @@ const NoAvatar = ({ size = "big_fixed" }) => {
 const MovieMediaCard = ({ media }) => {
   const { mediaName, mediaTypeDesc, imageURL, releaseDate, age } =
     getMovieAttributes(media);
-  const mainCast = media.credits.cast.slice(0, 6);
+  const mainCast = media.cast
+    .filter((person) => person.profile_path !== null)
+    .slice(0, 6);
 
   const ageLabel =
     age === null
@@ -83,7 +85,7 @@ const MovieMediaCard = ({ media }) => {
         <NoMovie />
       )}
       <div className="flex flex-col justify-between py-2 px-0 leading-normal md:px-4">
-        <h5 className="mb-1 px-2 text-center text-xl font-medium text-gray-900 dark:text-white">
+        <h5 className="mb-1 break-all px-2 text-center text-xl font-medium text-gray-900 dark:text-white sm:break-normal">
           {mediaName}
         </h5>
         <span className="px-2 text-center text-sm text-gray-500 dark:text-gray-400">

@@ -27,9 +27,20 @@ const fetchMovieDetails = async (media) => {
     `https://api.themoviedb.org/3/${media_type}/${id}?api_key=${process.env.TMDB_API_KEY}&append_to_response=credits`
   );
   const movie = await detail.json();
+
+  const cast = await Promise.all(
+    movie.credits.cast
+      .slice(0, 10)
+      .filter((person) => person.profile_path !== null)
+      .map(async (person) => {
+        const personDetail = await fetchPersonDetails(person);
+        return personDetail;
+      })
+  );
+
   return {
     ...media,
-    credits: movie.credits,
+    cast,
   };
 };
 
@@ -49,7 +60,7 @@ export const loader = async ({ request }) => {
   const data = await res.json();
 
   const completedResults = await Promise.all(
-    data.results.map(async (media) => {
+    data.results.slice(0, 10).map(async (media) => {
       const { media_type } = media;
       const detailedMedia = await fetchMediaDetails[media_type](media);
       return Promise.resolve(detailedMedia);
