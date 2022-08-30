@@ -3,7 +3,8 @@ import { json } from "@remix-run/node";
 import { useLoaderData, Form, useSearchParams } from "@remix-run/react";
 
 import MadeWith from "~/components/MadeWith";
-import MediaCard from "~/components/MediaCard";
+import PersonMediaCard from "~/components/PersonMediaCard";
+import MovieMediaCard from "~/components/MovieMediaCard";
 
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
@@ -41,6 +42,12 @@ const handleKeyUp = (event) => {
     // event.preventDefault();
     event.target.blur();
   }
+};
+
+const getMediaCardByType = {
+  person: PersonMediaCard,
+  movie: MovieMediaCard,
+  tv: MovieMediaCard,
 };
 
 export default function Index() {
@@ -108,7 +115,8 @@ export default function Index() {
               </div>
               <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3 2xl:grid-cols-4">
                 {results.map((result) => {
-                  const { id } = result;
+                  const { id, media_type } = result;
+                  const MediaCard = getMediaCardByType[media_type];
                   return <MediaCard key={id} media={result} />;
                 })}
               </div>
