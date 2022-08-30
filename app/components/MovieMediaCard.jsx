@@ -82,11 +82,11 @@ const MovieMediaCard = ({ media }) => {
       ) : (
         <NoMovie />
       )}
-      <div className="flex flex-col justify-between py-2 px-4 leading-normal">
-        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+      <div className="flex flex-col justify-between py-2 px-0 leading-normal md:px-4">
+        <h5 className="mb-1 px-2 text-center text-xl font-medium text-gray-900 dark:text-white">
           {mediaName}
         </h5>
-        <span className="text-sm text-gray-500 dark:text-gray-400">
+        <span className="px-2 text-center text-sm text-gray-500 dark:text-gray-400">
           <i>{mediaTypeDesc}</i>
         </span>
         <span className="pt-4 text-center text-lg text-gray-700 dark:text-gray-300 md:pt-2">
@@ -100,7 +100,7 @@ const MovieMediaCard = ({ media }) => {
                 return (
                   <p key={person.id} href="/" className="justify-center p-1">
                     <img
-                      className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
+                      className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
                       src={imageURL}
                       alt={person.name}
                     />

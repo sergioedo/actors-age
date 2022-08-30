@@ -135,7 +135,7 @@ export default function Index() {
                   </div>
                 </Form>
               </div>
-              <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3 2xl:grid-cols-4">
+              <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3">
                 {results.map((result) => {
                   const { id, media_type } = result;
                   const MediaCard = getMediaCardByType[media_type];
