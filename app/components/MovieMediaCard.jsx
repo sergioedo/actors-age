@@ -1,4 +1,4 @@
-import { getMovieAttributes } from "~/mediaUtils";
+import { getMovieAttributes, imageBaseURL } from "~/mediaUtils";
 
 const NoMovie = ({ transparent = true }) => {
   return (
@@ -22,9 +22,42 @@ const NoMovie = ({ transparent = true }) => {
   );
 };
 
+const noAvatarCls = {
+  big_fixed: {
+    container: "h-24 w-24",
+    icon: "left-2 top-1 h-20 w-20",
+  },
+  small_responsive: {
+    container: "h-8 w-8 sm:h-12 sm:w-12",
+    icon: "h-6 w-6 left-1 top-0 sm:left-2 sm:top-1 sm:h-8 sm:w-8",
+  },
+};
+const NoAvatar = ({ size = "big_fixed" }) => {
+  const classes = noAvatarCls[size];
+  return (
+    <div
+      className={`relative ${classes.container} m-1 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600`}
+    >
+      <svg
+        className={`absolute ${classes.icon} text-gray-400`}
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+          clipRule="evenodd"
+        ></path>
+      </svg>
+    </div>
+  );
+};
+
 const MovieMediaCard = ({ media }) => {
   const { mediaName, mediaTypeDesc, imageURL, releaseDate, age } =
     getMovieAttributes(media);
+  const mainCast = media.credits.cast.slice(0, 6);
 
   const ageLabel =
     age === null
@@ -61,77 +94,24 @@ const MovieMediaCard = ({ media }) => {
         </span>
         <div className="pt-4 md:pt-2">
           <div className="flex flex-row flex-wrap justify-center gap-0">
-            <a href="/" className="justify-center p-1">
-              <img
-                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
-                src={imageURL}
-                alt={mediaName}
-              />
-            </a>
-            <a href="/" className="justify-center p-1">
-              <img
-                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
-                src={imageURL}
-                alt={mediaName}
-              />
-            </a>
-            <a href="/" className="justify-center p-1">
-              <img
-                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
-                src={imageURL}
-                alt={mediaName}
-              />
-            </a>
-            <a href="/" className="justify-center p-1">
-              <img
-                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
-                src={imageURL}
-                alt={mediaName}
-              />
-            </a>
-            <a href="/" className="justify-center p-1">
-              <img
-                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
-                src={imageURL}
-                alt={mediaName}
-              />
-            </a>
-            <a href="/" className="justify-center p-1">
-              <img
-                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
-                src={imageURL}
-                alt={mediaName}
-              />
-            </a>
+            {mainCast.map((person) => {
+              const imageURL = `${imageBaseURL}w185${person.profile_path}`;
+              if (person.profile_path) {
+                return (
+                  <p key={person.id} href="/" className="justify-center p-1">
+                    <img
+                      className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
+                      src={imageURL}
+                      alt={person.name}
+                    />
+                  </p>
+                );
+              } else {
+                return <NoAvatar key={person.id} size={"small_responsive"} />;
+              }
+            })}
           </div>
         </div>
-        {/* <div className="mt-5 grid grid-flow-row grid-cols-4 gap-1">
-            <img
-              className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
-              src={imageURL}
-              alt={mediaName}
-            />
-            <img
-              className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
-              src={imageURL}
-              alt={mediaName}
-            />
-            <img
-              className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
-              src={imageURL}
-              alt={mediaName}
-            />
-            <img
-              className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
-              src={imageURL}
-              alt={mediaName}
-            />
-            <img
-              className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
-              src={imageURL}
-              alt={mediaName}
-            />
-          </div> */}
       </div>
     </a>
   );

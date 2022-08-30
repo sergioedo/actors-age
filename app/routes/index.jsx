@@ -6,6 +6,39 @@ import MadeWith from "~/components/MadeWith";
 import PersonMediaCard from "~/components/PersonMediaCard";
 import MovieMediaCard from "~/components/MovieMediaCard";
 
+const fetchPersonDetails = async (media) => {
+  const { id } = media;
+  // add detailed data from person (birthday, deathday)
+  const detail = await fetch(
+    `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.TMDB_API_KEY}`
+  );
+  const person = await detail.json();
+  return {
+    ...media,
+    birthday: person.birthday,
+    deathday: person.deathday,
+  };
+};
+
+const fetchMovieDetails = async (media) => {
+  const { id, media_type } = media;
+  // add detailed data from person (birthday, deathday)
+  const detail = await fetch(
+    `https://api.themoviedb.org/3/${media_type}/${id}?api_key=${process.env.TMDB_API_KEY}&append_to_response=credits`
+  );
+  const movie = await detail.json();
+  return {
+    ...media,
+    credits: movie.credits,
+  };
+};
+
+const fetchMediaDetails = {
+  person: fetchPersonDetails,
+  movie: fetchMovieDetails,
+  tv: fetchMovieDetails,
+};
+
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const query = url.searchParams.get("query");
@@ -17,20 +50,9 @@ export const loader = async ({ request }) => {
 
   const completedResults = await Promise.all(
     data.results.map(async (media) => {
-      const { id, media_type } = media;
-      if (media_type === "person") {
-        // add detailed data from person (birthday, deathday)
-        const detail = await fetch(
-          `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.TMDB_API_KEY}`
-        );
-        const person = await detail.json();
-        return Promise.resolve({
-          ...media,
-          birthday: person.birthday,
-          deathday: person.deathday,
-        });
-      }
-      return Promise.resolve(media);
+      const { media_type } = media;
+      const detailedMedia = await fetchMediaDetails[media_type](media);
+      return Promise.resolve(detailedMedia);
     })
   );
   return json({ ...data, results: completedResults });
@@ -55,7 +77,7 @@ export default function Index() {
   const { results = [] } = useLoaderData();
   console.log(results);
   return (
-    <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
+    <main className="relative min-h-screen bg-white dark:bg-gray-700 sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
         <div className="max-w-9xl mx-auto sm:px-6 lg:px-8">
           <div className="relative bg-black shadow-xl sm:overflow-hidden sm:rounded-2xl">
@@ -104,7 +126,7 @@ export default function Index() {
                       type="text"
                       id="simple-search"
                       name="query"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:bg-gray-100 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-800 dark:focus:bg-gray-700 dark:focus:ring-blue-500"
                       placeholder="Search for actors, movies, tv shows..."
                       defaultValue={params.get("query")}
                       onKeyUp={handleKeyUp}
