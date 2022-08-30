@@ -106,7 +106,7 @@ export default function Index() {
                   </div>
                 </Form>
               </div>
-              <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-3 lg:gap-2 lg:space-y-0">
+              <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3 2xl:grid-cols-4">
                 {results.map((result) => {
                   const { id } = result;
                   return <MediaCard key={id} media={result} />;

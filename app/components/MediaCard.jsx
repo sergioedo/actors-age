@@ -103,7 +103,7 @@ const PersonMediaCard = ({
   return (
     <a
       href="/"
-      className="flex max-w-xl flex-col items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+      className="flex flex-col items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
       <div className="flex flex-col items-center bg-transparent pb-10 pt-10">
         {imageURL ? (
@@ -121,7 +121,7 @@ const PersonMediaCard = ({
         <span className="text-sm text-gray-500 dark:text-gray-400">
           <i>{mediaTypeDesc}</i>
         </span>
-        <span className="pt-5 text-lg text-gray-700 dark:text-gray-300">
+        <span className="pt-4 text-lg text-gray-700 dark:text-gray-300">
           {ageLabel}
         </span>
       </div>
@@ -149,33 +149,100 @@ const MovieMediaCard = ({
   return (
     <a
       href="/"
-      className="flex max-w-xl flex-col items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:flex-row"
+      className="flex flex-row items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
       {imageURL ? (
         <img
-          className="xs:h-54 md:h-84 object-cover md:w-48 md:rounded-none md:rounded-l-lg"
+          className="xs:h-54 md:h-84 rounded-l-lg object-cover md:w-48"
           src={imageURL}
           alt={mediaName}
         />
       ) : (
         <NoMovie />
       )}
-      <div className="flex flex-col justify-between p-4 leading-normal">
-        {/* <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {mediaName}
-        </h5>
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          {ageLabel}
-        </p> */}
+      <div className="flex flex-col justify-between py-2 px-4 leading-normal">
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
           {mediaName}
         </h5>
         <span className="text-sm text-gray-500 dark:text-gray-400">
           <i>{mediaTypeDesc}</i>
         </span>
-        <span className="pt-5 text-lg text-gray-700 dark:text-gray-300">
+        <span className="pt-4 text-center text-lg text-gray-700 dark:text-gray-300 md:pt-2">
           {ageLabel}
         </span>
+        <div className="pt-4 md:pt-2">
+          <div className="flex flex-row flex-wrap justify-center gap-0">
+            <a href="/" className="justify-center p-1">
+              <img
+                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
+                src={imageURL}
+                alt={mediaName}
+              />
+            </a>
+            <a href="/" className="justify-center p-1">
+              <img
+                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
+                src={imageURL}
+                alt={mediaName}
+              />
+            </a>
+            <a href="/" className="justify-center p-1">
+              <img
+                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
+                src={imageURL}
+                alt={mediaName}
+              />
+            </a>
+            <a href="/" className="justify-center p-1">
+              <img
+                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
+                src={imageURL}
+                alt={mediaName}
+              />
+            </a>
+            <a href="/" className="justify-center p-1">
+              <img
+                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
+                src={imageURL}
+                alt={mediaName}
+              />
+            </a>
+            <a href="/" className="justify-center p-1">
+              <img
+                className="mb-3 h-8 w-8 rounded-full object-cover shadow-lg sm:h-12 sm:w-12"
+                src={imageURL}
+                alt={mediaName}
+              />
+            </a>
+          </div>
+        </div>
+        {/* <div className="mt-5 grid grid-flow-row grid-cols-4 gap-1">
+          <img
+            className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
+            src={imageURL}
+            alt={mediaName}
+          />
+          <img
+            className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
+            src={imageURL}
+            alt={mediaName}
+          />
+          <img
+            className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
+            src={imageURL}
+            alt={mediaName}
+          />
+          <img
+            className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
+            src={imageURL}
+            alt={mediaName}
+          />
+          <img
+            className="mb-3 h-12 w-12 rounded-full object-cover shadow-lg"
+            src={imageURL}
+            alt={mediaName}
+          />
+        </div> */}
       </div>
     </a>
   );
