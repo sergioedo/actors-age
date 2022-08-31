@@ -12,7 +12,10 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 
 export const links = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [
+    { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+  ];
 };
 
 export const meta = () => ({
