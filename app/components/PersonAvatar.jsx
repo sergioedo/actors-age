@@ -50,7 +50,7 @@ const PersonAvatar = ({
   deadSince,
 }) => {
   const { imageCls, notificationCls } = avatarCls[size];
-  const ageValue = age === null ? "?" : deadSince ? "+" : age;
+  const ageValue = age === null ? "?" : deadSince ? "&#10015;" : age;
   if (imageURL) {
     return (
       <div className="relative">
@@ -59,11 +59,13 @@ const PersonAvatar = ({
           src={imageURL}
           alt={name}
         />
-        <div
-          className={`absolute ${notificationCls} inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs font-bold text-white dark:border-gray-900`}
-        >
-          {ageValue}
-        </div>
+        {age && (
+          <div
+            className={`absolute ${notificationCls} inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-yellow-500 text-xs font-bold text-gray-100 dark:border-gray-900 dark:text-black`}
+          >
+            <div dangerouslySetInnerHTML={{ __html: ageValue }} />
+          </div>
+        )}
       </div>
     );
   } else return <NoAvatar size={size} />;
