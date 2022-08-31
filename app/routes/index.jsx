@@ -1,10 +1,16 @@
 import React from "react";
 import { json } from "@remix-run/node";
-import { useLoaderData, Form, useSearchParams } from "@remix-run/react";
+import {
+  useLoaderData,
+  Form,
+  useSearchParams,
+  useTransition,
+} from "@remix-run/react";
 
 import MadeWith from "~/components/MadeWith";
 import PersonMediaCard from "~/components/PersonMediaCard";
 import MovieMediaCard from "~/components/MovieMediaCard";
+import Loading from "~/components/Loading";
 
 const fetchPersonDetails = async (media) => {
   const { id } = media;
@@ -86,6 +92,7 @@ const getMediaCardByType = {
 export default function Index() {
   const [params] = useSearchParams();
   const { results = [] } = useLoaderData();
+  const transition = useTransition();
   console.log(results);
   return (
     <main className="relative min-h-screen bg-white dark:bg-gray-700 sm:flex sm:items-center sm:justify-center">
@@ -146,13 +153,19 @@ export default function Index() {
                   </div>
                 </Form>
               </div>
-              <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3">
-                {results.map((result) => {
-                  const { id, media_type } = result;
-                  const MediaCard = getMediaCardByType[media_type];
-                  return <MediaCard key={id} media={result} />;
-                })}
-              </div>
+              {transition.state === "idle" ? (
+                <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3">
+                  {results.map((result) => {
+                    const { id, media_type } = result;
+                    const MediaCard = getMediaCardByType[media_type];
+                    return <MediaCard key={id} media={result} />;
+                  })}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center pt-10">
+                  <Loading />
+                </div>
+              )}
             </div>
           </div>
         </div>
