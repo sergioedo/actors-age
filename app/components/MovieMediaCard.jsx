@@ -1,4 +1,5 @@
 import { getMovieAttributes, getPersonAttributes } from "~/mediaUtils";
+import LazyImage from "./LazyImage";
 import PersonAvatar from "./PersonAvatar";
 
 const NoMovie = ({ transparent = true }) => {
@@ -56,10 +57,11 @@ const MovieMediaCard = ({ media }) => {
       className="flex flex-row items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
       {imageURL ? (
-        <img
+        <LazyImage
           className="xs:h-54 md:h-84 rounded-l-lg object-cover md:w-48"
           src={imageURL}
           alt={mediaName}
+          loading="lazy"
         />
       ) : (
         <NoMovie />

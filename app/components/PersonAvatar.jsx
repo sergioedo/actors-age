@@ -1,3 +1,5 @@
+import LazyImage from "./LazyImage";
+
 const noAvatarCls = {
   big: {
     container: "h-24 w-24",
@@ -54,10 +56,11 @@ const PersonAvatar = ({
   if (imageURL) {
     return (
       <div className="relative">
-        <img
+        <LazyImage
           className={`m-1 mb-3 ${imageCls} rounded-full object-cover shadow-lg`}
           src={imageURL}
           alt={name}
+          loading="lazy"
         />
         {age && (
           <div
