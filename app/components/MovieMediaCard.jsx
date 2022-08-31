@@ -53,7 +53,7 @@ const MovieMediaCard = ({ media }) => {
       ) : (
         <NoMovie />
       )}
-      <div className="flex flex-col justify-between py-2 px-0 leading-normal md:px-4">
+      <div className="flex w-full flex-col justify-between py-2 px-0 leading-normal md:px-4">
         <h5 className="mb-1 break-all px-2 text-center text-xl font-medium text-gray-900 dark:text-white sm:break-normal">
           {mediaName}
         </h5>
