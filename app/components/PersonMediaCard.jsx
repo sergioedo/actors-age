@@ -2,8 +2,10 @@ import { getPersonAttributes } from "~/mediaUtils";
 import PersonAvatar from "./PersonAvatar";
 
 const PersonMediaCard = ({ media }) => {
-  const { mediaName, mediaTypeDesc, imageURL, birthday, age, dead_since } =
+  const { id, mediaName, mediaTypeDesc, imageURL, birthday, age, dead_since } =
     getPersonAttributes(media);
+
+  const TMDBLink = `https://www.themoviedb.org/person/${id}`;
 
   const ageLabel =
     age === null
@@ -18,7 +20,9 @@ const PersonMediaCard = ({ media }) => {
 
   return (
     <a
-      href="/"
+      href={TMDBLink}
+      target="_blank"
+      rel="noreferrer"
       className="flex flex-col items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
       <div className="flex flex-col items-center bg-transparent pb-10 pt-10">

@@ -24,11 +24,20 @@ const NoMovie = ({ transparent = true }) => {
 };
 
 const MovieMediaCard = ({ media }) => {
-  const { mediaName, mediaTypeDesc, imageURL, releaseDate, age } =
-    getMovieAttributes(media);
+  const {
+    id,
+    mediaName,
+    mediaType,
+    mediaTypeDesc,
+    imageURL,
+    releaseDate,
+    age,
+  } = getMovieAttributes(media);
   const mainCast = media.cast
     .filter((person) => person.profile_path !== null)
     .slice(0, 6);
+
+  const TMDBLink = `https://www.themoviedb.org/${mediaType}/${id}`;
 
   const ageLabel =
     age === null
@@ -41,7 +50,9 @@ const MovieMediaCard = ({ media }) => {
 
   return (
     <a
-      href="/"
+      href={TMDBLink}
+      target="_blank"
+      rel="noreferrer"
       className="flex flex-row items-center rounded-lg border bg-white shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
       {imageURL ? (

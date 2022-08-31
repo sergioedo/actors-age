@@ -41,14 +41,16 @@ function calculateAgeFromDate(fromDate) {
 }
 
 const getMediaAttributes = (media) => {
-  const { media_type } = media;
+  const { id, media_type } = media;
   const mediaName = getMediaName[media_type](media);
   const mediaTypeDesc = getMediaTypeDesc[media_type](media);
   const imageURL = mediaImageURL[media_type](media);
   const startDate = getMediaStartDate[media_type](media);
   const age = startDate ? calculateAgeFromDate(new Date(startDate)) : null;
   return {
+    id,
     mediaName,
+    mediaType: media_type,
     mediaTypeDesc,
     imageURL,
     startDate: new Date(startDate),
@@ -58,10 +60,11 @@ const getMediaAttributes = (media) => {
 
 const getPersonAttributes = (media) => {
   const { deathday } = media;
-  const { mediaName, mediaTypeDesc, imageURL, startDate, age } =
+  const { id, mediaName, mediaTypeDesc, imageURL, startDate, age } =
     getMediaAttributes(media);
 
   return {
+    id,
     mediaName,
     mediaTypeDesc,
     imageURL,
@@ -73,10 +76,12 @@ const getPersonAttributes = (media) => {
 };
 
 const getMovieAttributes = (media) => {
-  const { mediaName, mediaTypeDesc, imageURL, startDate, age } =
+  const { id, mediaName, mediaType, mediaTypeDesc, imageURL, startDate, age } =
     getMediaAttributes(media);
 
   return {
+    id,
+    mediaType,
     mediaName,
     mediaTypeDesc,
     imageURL,
