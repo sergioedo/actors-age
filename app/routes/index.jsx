@@ -91,6 +91,7 @@ const getMediaCardByType = {
 
 export default function Index() {
   const [params] = useSearchParams();
+  const query = params.get("query");
   const { results = [] } = useLoaderData();
   const transition = useTransition();
   console.log(results);
@@ -146,7 +147,7 @@ export default function Index() {
                       name="query"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:bg-gray-100 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-800 dark:focus:bg-gray-700 dark:focus:ring-blue-500"
                       placeholder="Search for actors, movies, tv shows..."
-                      defaultValue={params.get("query")}
+                      defaultValue={query}
                       onKeyUp={handleKeyUp}
                       required
                     />
@@ -154,13 +155,21 @@ export default function Index() {
                 </Form>
               </div>
               {transition.state === "idle" ? (
-                <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3">
-                  {results.map((result) => {
-                    const { id, media_type } = result;
-                    const MediaCard = getMediaCardByType[media_type];
-                    return <MediaCard key={id} media={result} />;
-                  })}
-                </div>
+                results.length ? (
+                  <div className="container mx-auto mt-5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3">
+                    {results.map((result) => {
+                      const { id, media_type } = result;
+                      const MediaCard = getMediaCardByType[media_type];
+                      return <MediaCard key={id} media={result} />;
+                    })}
+                  </div>
+                ) : (
+                  query && (
+                    <div className="flex items-center justify-center pt-10">
+                      <h3 className="text-white">No results found</h3>
+                    </div>
+                  )
+                )
               ) : (
                 <div className="flex items-center justify-center pt-10">
                   <Loading />
