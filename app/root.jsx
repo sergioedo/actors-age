@@ -9,7 +9,6 @@ import {
 } from "@remix-run/react";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
-import { getUser } from "./session.server";
 
 export const links = () => {
   return [
@@ -25,9 +24,7 @@ export const meta = () => ({
 });
 
 export async function loader({ request }) {
-  return json({
-    user: await getUser(request),
-  });
+  return json({});
 }
 
 export default function App() {
