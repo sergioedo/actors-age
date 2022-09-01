@@ -78,7 +78,6 @@ export const loader = async ({ request }) => {
 const handleKeyUp = (event) => {
   //key code for enter
   if (event.keyCode === 13) {
-    // event.preventDefault();
     event.target.blur();
   }
 };
@@ -94,7 +93,7 @@ export default function Index() {
   const query = params.get("query");
   const { results = [] } = useLoaderData();
   const transition = useTransition();
-  console.log(results);
+
   return (
     <main className="relative min-h-screen bg-white dark:bg-gray-700 sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
