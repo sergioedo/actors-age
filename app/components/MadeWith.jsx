@@ -5,6 +5,7 @@ import {
   RemixIcon,
   TailWindIcon,
   TMDBIcon,
+  HeadlessUIIcon,
 } from "./ProductIcons";
 
 const madeWith = [
@@ -27,6 +28,11 @@ const madeWith = [
     alt: "Tailwind",
     href: "https://tailwindcss.com",
     icon: TailWindIcon,
+  },
+  {
+    alt: "Headless UI",
+    href: "https://headlessui.com/",
+    icon: HeadlessUIIcon,
   },
   {
     alt: "Fly.io",
