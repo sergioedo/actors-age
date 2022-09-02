@@ -59,27 +59,25 @@ const fetchMediaDetails = {
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const query = url.searchParams.get("query");
+  const searchType = url.searchParams.get("type") || "multi";
   if (!query) return {};
   const res = await fetch(
-    `https://api.themoviedb.org/3/search/multi?api_key=${process.env.TMDB_API_KEY}&query=${query}`
+    `https://api.themoviedb.org/3/search/${searchType}?api_key=${process.env.TMDB_API_KEY}&query=${query}`
   );
   const data = await res.json();
 
   const completedResults = await Promise.all(
     data.results.slice(0, 10).map(async (media) => {
-      const { media_type } = media;
-      const detailedMedia = await fetchMediaDetails[media_type](media);
+      const mediaWithType = media.media_type
+        ? media
+        : { ...media, media_type: searchType };
+      const detailedMedia = await fetchMediaDetails[mediaWithType.media_type](
+        mediaWithType
+      );
       return Promise.resolve(detailedMedia);
     })
   );
   return json({ ...data, results: completedResults });
-};
-
-const handleKeyUp = (event) => {
-  //key code for enter
-  if (event.keyCode === 13 && event.target.value.length > 0) {
-    event.target.blur();
-  }
 };
 
 const getMediaCardByType = {
@@ -96,7 +94,7 @@ export default function Index() {
 
   return (
     <main className="relative min-h-screen bg-white dark:bg-gray-700 sm:flex sm:items-center sm:justify-center">
-      <div className="relative sm:pb-16 sm:pt-8">
+      <div className="relative sm:pb-32 sm:pt-8">
         <div className="max-w-9xl mx-auto sm:px-6 lg:px-8">
           <div className="relative bg-black shadow-xl sm:overflow-hidden sm:rounded-2xl">
             <div className="absolute">
@@ -120,7 +118,7 @@ export default function Index() {
                 search it.
               </p>
               <div className="mx-auto mt-10 max-w-sm sm:max-w-none sm:justify-center">
-                <SearchBar query={query} handleKeyUp={handleKeyUp} />
+                <SearchBar query={query} />
               </div>
               {transition.state === "idle" ? (
                 results.length ? (
@@ -132,11 +130,16 @@ export default function Index() {
                     })}
                   </div>
                 ) : (
-                  query && (
-                    <div className="flex items-center justify-center pt-10">
-                      <h3 className="text-white">No results found</h3>
-                    </div>
-                  )
+                  <div className="flex items-center justify-center pt-20">
+                    {query ? (
+                      <h2 className="text-white">No results found</h2>
+                    ) : (
+                      <div>
+                        <br />
+                        {/* <br /> */}
+                      </div>
+                    )}
+                  </div>
                 )
               ) : (
                 <div className="flex items-center justify-center pt-10">
