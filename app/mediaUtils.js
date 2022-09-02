@@ -90,4 +90,4 @@ const getMovieAttributes = (media) => {
   };
 };
 
-export { getPersonAttributes, getMovieAttributes, imageBaseURL };
+export { getMediaName, getPersonAttributes, getMovieAttributes, imageBaseURL };
